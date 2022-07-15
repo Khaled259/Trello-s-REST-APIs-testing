@@ -1,0 +1,29 @@
+{
+	"id": "de7d1dc0-eca0-4281-8c52-f5412e9bc3f7",
+	"values": [
+		{
+			"key": "baseUrl",
+			"value": "https://api.trello.com/1/boards/IwHCcuL4/",
+			"enabled": true
+		},
+		{
+			"key": "APIKEY",
+			"value": "e385e6347369be467a41dcec9eb37945",
+			"enabled": true
+		},
+		{
+			"key": "APITOKEn",
+			"value": "daf4095434e4fd02ad302c145877c6dfa5305ac1f3c68f8a30e7627333a0b87f",
+			"enabled": true
+		},
+		{
+			"key": "baseurll",
+			"value": "https://api.trello.com/1/boards/oJ97sOqB/",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2022-06-20T08:02:27.552Z",
+	"_postman_exported_using": "Postman/9.21.3"
+}

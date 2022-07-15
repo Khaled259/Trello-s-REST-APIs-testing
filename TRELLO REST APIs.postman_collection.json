@@ -1,0 +1,1045 @@
+{
+	"info": {
+		"_postman_id": "0d4f5211-fcb0-4264-9bc7-e244160f3ac3",
+		"name": "TRELLO REST APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21347187"
+	},
+	"item": [
+		{
+			"name": "Get all boards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Should verify status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    resBody = pm.response.json();\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseuurl}}boards?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{baseuurl}}boards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"verify that 'permissionLevel' value is private \", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.prefs.permissionLevel).to.eql(\"private\");\r",
+							"});\r",
+							"pm.test(\"verify that 'canBePublic' is true\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.prefs.canBePublic).to.eql(true);\r",
+							"});\r",
+							"pm.test(\"verify that 'canBePublic' is true\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.prefs.canBePrivate).to.eql(true);\r",
+							"});\r",
+							"pm.test(\"verify that 'closed' is false\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.closed).to.eql(false);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?name=KhaledHamed1&key={{APIKEY}}&token={{APITOKEn}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "KhaledHamed1"
+						},
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "open boards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json().boards[0];\r",
+							"\r",
+							"pm.test(\"verify that number of boards > 1 \", function () {\r",
+							"    pm.expect(data.length>1);\r",
+							"});\r",
+							"pm.environment.set(\"FirstBoardID\", pm.response.json().boards[0].id);\r",
+							"pm.environment.set(\"LastBoardID\", pm.response.json().boards[1].id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.trello.com/1/members/me?boards=open&key={{APIKEY}}&token={{APITOKEn}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"members",
+						"me"
+					],
+					"query": [
+						{
+							"key": "boards",
+							"value": "open"
+						},
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						},
+						{
+							"key": null,
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Check response body include board is 'removed successfully'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"board is removed successfully\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/{{FirstBoardID}}?key={{APIKEY}}&token={{APITOKEn}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{FirstBoardID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response body include id\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"});\r",
+							"pm.test(\"Check response body include name\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"});\r",
+							"pm.test(\"Check response body include idBoard\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idBoard\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check value of closed = false\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.closed).to.eql(false);\r",
+							"});\r",
+							"pm.test(\"Check limits = {}\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.limits).to.eql({});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"idBoard\": \"62a20a474200370f72fb2555\",\r\n \"name\": \"To submit\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{rooturl}}lists?name=TO DO&idboard={{SecondİdBoard}}&key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{rooturl}}lists"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "TO DO"
+						},
+						{
+							"key": "idboard",
+							"value": "{{SecondİdBoard}}"
+						},
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lists of Plan board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();\r",
+							"pm.test('Check list number is 3 lists ', function () {\r",
+							"    pm.expect(data.length).to.equal(3);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{rooturl}}boards/IwHCcuL4/lists?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{rooturl}}boards"
+					],
+					"path": [
+						"IwHCcuL4",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Archive or Unarchive a list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"check closed value is true\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.closed).to.eql(true);\r",
+							"});\r",
+							"pm.test(\"check Set-Cookie is contain isEnterpriseAdmin%3Dfalse\", function () {\r",
+							"   pm.expect(pm.response.headers.get(\"Set-Cookie\")).to.include(\"isEnterpriseAdmin%3Dfalse\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"id\": \"62a20ce46e2fa57bbb2b48e8\",\r\n        \"idBoard\": \"62a20a474200370f72fb2555\",\r\n        \"idList\": \"62a20a614a8e61040d0bc37f\",\r\n        \"name\": \"update\"\r\n        \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.trello.com/1/lists/62b429c2263e9c6c59e70140/closed?key={{APIKEY}}&token={{APITOKEn}}&value=true",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"lists",
+						"62b429c2263e9c6c59e70140",
+						"closed"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						},
+						{
+							"key": "value",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check for valid authorization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?key={{APIKEY}}&token=&name=PLAN",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": ""
+						},
+						{
+							"key": "name",
+							"value": "PLAN"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get plan to fun board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"environment to be production\", function () {\r",
+							"    pm.expect(pm.environment.get(\"env\")).to.equal(\"production\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response must be valid and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{rooturl}}boards/oJ97sOqB?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{rooturl}}boards"
+					],
+					"path": [
+						"oJ97sOqB"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cards of Plan board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{rooturl}}boards/IwHCcuL4/cards?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{rooturl}}boards"
+					],
+					"path": [
+						"IwHCcuL4",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new list to Plan board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Should verify status code\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    resBody = pm.response.json();\r",
+							"})\r",
+							"pm.test(\"Should verify list name\", () => {\r",
+							"    pm.expect(resBody.name).to.eql(pm.collectionVariables.get(\"listName\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"listID\", resBody.id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"idBoard\": \"62a20a474200370f72fb2555\",\r\n \"name\": \"To submit\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{rooturl}}lists?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{rooturl}}lists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add card1 to our new list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody;\r",
+							"\r",
+							"pm.test(\"Should verify status code\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    resBody = pm.response.json();\r",
+							"})\r",
+							"pm.test(\"Should verify card name\", () => {\r",
+							"    pm.expect(resBody.name).to.eql(pm.collectionVariables.get(\"cardName\"));\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"listID\", resBody.id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"idBoard\": \"62a20a474200370f72fb2555\",\r\n \"name\": \"Export your collection, your environment variables, and global variables if found and submit them.\",\r\n \"idList\": \"62a2ca2fea47ba4d9940aca2\"\r\n \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{rooturl}}cards?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{rooturl}}cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add card2 to our new list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"idBoard\": \"62a20a474200370f72fb2555\",\r\n \"name\": \"Export your test results in JSON file format and submit them..\",\r\n \"idList\": \"62a2ca2fea47ba4d9940aca2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{rooturl}}cards?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{rooturl}}cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updatae found card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"id\": \"62a20ce46e2fa57bbb2b48e8\",\r\n        \"idBoard\": \"62a20a474200370f72fb2555\",\r\n        \"idList\": \"62a20a614a8e61040d0bc37f\",\r\n        \"name\": \"update\"\r\n        \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}cards?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{baseUrl}}cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /1/cards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Card is created and public\", function () {\r",
+							"    pm.expect(response.name).to.eql(\"Learn Postman\");\r",
+							"    pm.expect(response.closed).to.eql(false);\r",
+							"    pm.environment.set(\"card_id\", response.id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Card was added to correct card\", function () {\r",
+							"    var İdlist = pm.environment.get(\"İdlist\");\r",
+							"    pm.expect(response.idList).to.eql(İdlist);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Card was added to correct board\", function () {\r",
+							"    var board_id = pm.environment.get(\"board_id\");\r",
+							"    pm.expect(response.idBoard).to.eql(board_id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Card was no votes or attachments\", function () {\r",
+							"    pm.expect(response.badges.votes).to.eql(0);\r",
+							"    pm.expect(response.badges.attachments).to.eql(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idBoard\": \"62a20a474200370f72fb2555\",\r\n    \"idLabels\": [],\r\n    \"idList\": \"62a2ca2fea47ba4d9940aca2\",\r\n    \"idMembers\": [],\r\n    \"name\": \"Learn Postman\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{rooturl}}cards?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{rooturl}}cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/cards/{{cardid}}?key={{APIKEY}}&token={{APITOKEn}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"cards",
+						"{{cardid}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check the board is deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/hW8ePCSP?key={{APIKEY}}&token={{APITOKEn}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						"hW8ePCSP"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get boards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"if (response){\r",
+							"    console.log(response[0].id);\r",
+							"    pm.environment.set(\"board_id\", response[0].id);\r",
+							"    postman.setNextRequest(\"Delete Board\");\r",
+							"} \r",
+							"else {\r",
+							"    postman.setNextRequest(null);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseuurl}}boards?key={{APIKEY}}&token={{APITOKEn}}",
+					"host": [
+						"{{baseuurl}}boards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{APIKEY}}"
+						},
+						{
+							"key": "token",
+							"value": "{{APITOKEn}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "İdlist",
+			"value": "62a2ca2fea47ba4d9940aca2"
+		},
+		{
+			"key": "APITOKEn",
+			"value": "daf4095434e4fd02ad302c145877c6dfa5305ac1f3c68f8a30e7627333a0b87f"
+		},
+		{
+			"key": "APIKEY",
+			"value": "e385e6347369be467a41dcec9eb37945"
+		},
+		{
+			"key": "CARDID",
+			"value": "62caeb130d998b7664b1f42b"
+		},
+		{
+			"key": "cardid",
+			"value": "62cc0af952f9b6265c6d3fe6"
+		},
+		{
+			"key": "listID",
+			"value": ""
+		}
+	]
+}
